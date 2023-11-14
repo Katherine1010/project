@@ -176,14 +176,17 @@ exports.submitRecipeOnPost = async(req, res) => {
 
 // Delete Recipe
 
-exports.deleteRecipe = async(req, res) => {
+exports.deleteRecipe = async (req, res) => {
   try {
-    let recipeId = req.params.id;
-    const product = await Recipe.findByIdAndDelete({_id: recipeId})
+    const recipeId = req.params.id;
+    console.log('Deleting recipe with ID:', recipeId);
+    await Recipe.findByIdAndDelete(recipeId);
+    res.json({ success: true, message: 'Recipe deleted successfully' });
   } catch (error) {
-    res.satus(500).send({message: error.message || "Error Occured" });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
-} 
+};
 
 // async function deleteRecipe(){
 //   try {

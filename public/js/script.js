@@ -8,3 +8,19 @@ addIngredientsBtn.addEventListener('click', function(){
   input.value = '';
   ingredientList.appendChild(newIngredients);
 });
+
+function deleteRecipe(recipeId) {
+  fetch(`/recipe/${recipeId}`, {
+    method: 'DELETE',
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Network response was not ok - ${response.statusText}`);
+      }
+      console.log('Recipe deleted successfully');
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error deleting recipe:', error.message);
+    });
+}
