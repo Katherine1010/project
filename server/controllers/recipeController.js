@@ -63,7 +63,7 @@ exports.exploreRecipe = async(req, res) => {
     const recipe = await Recipe.findById(recipeId);
     res.render('recipe', { title: 'La Cucina Felice - Recipe', recipe } );
   } catch (error) {
-    res.satus(500).send({message: error.message || "Error Occured" });
+    res.status(500).send({message: error.message || "Error Occured" });
   }
 } 
 
@@ -171,9 +171,6 @@ exports.submitRecipeOnPost = async(req, res) => {
   }
 }
 
-
-
-
 // Delete Recipe
 
 exports.deleteRecipe = async (req, res) => {
@@ -188,101 +185,61 @@ exports.deleteRecipe = async (req, res) => {
   }
 };
 
-// async function deleteRecipe(){
-//   try {
-//     await Recipe.deleteOne({ name: 'New Recipe From Form' });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-// deleteRecipe();
 
-
+// POST /update-recipe
 // Update Recipe
-// async function updateRecipe(){
-//   try {
-//     const res = await Recipe.updateOne({ name: 'New Recipe' }, { name: 'New Recipe Updated' });
-//     res.n; // Number of documents matched
-//     res.nModified; // Number of documents modified
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-// updateRecipe();
+const { findOneAndUpdate } = require('../models/Recipe');
+
+exports.updateRecipeOnPost = async (req, res) => {
+  try {
+    let imageUploadFile;
+    let uploadPath;
+    let newImageName;
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+      console.log('No Files were uploaded.');
+    } else {
+      imageUploadFile = req.files.image;
+      newImageName = Date.now() + imageUploadFile.name;
+
+      uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
+
+      imageUploadFile.mv(uploadPath, function (err) {
+        if (err) return res.status(500).send(err);
+      });
+    }
+
+    const recipeId = req.params.id;
+    const existingRecipe = await Recipe.findById(recipeId);
+
+    if (!existingRecipe) {
+      return res.status(404).json({ success: false, message: 'Recipe not found' });
+    }
+
+    // Update existing fields
+    existingRecipe.name = req.body.name;
+    existingRecipe.description = req.body.description;
+    existingRecipe.email = req.body.email;
+    existingRecipe.ingredients = req.body.ingredients;
+    existingRecipe.category = req.body.category;
+
+    // Update image if a new image is provided
+    if (req.files && Object.keys(req.files).length > 0) {
+      existingRecipe.image = newImageName;
+    }
+
+    // Save the updated recipe
+    await existingRecipe.save();
+
+    req.flash('infoSubmit', 'Recipe has been updated.');
+    res.redirect(`/recipe/${recipeId}`);
+  } catch (error) {
+    console.error(error);
+    req.flash('infoErrors', 'An error occurred while updating the recipe.');
+    res.redirect(`/recipe/${recipeId}`);
+  }
+};
 
 
-/**
- * Dummy Data Example 
-*/
 
-// async function insertDymmyCategoryData(){
-//   try {
-//     await Category.insertMany([
-//       {
-//         "name": "Thai",
-//         "image": "thai-food.jpg"
-//       },
-//       {
-//         "name": "American",
-//         "image": "american-food.jpg"
-//       }, 
-//       {
-//         "name": "Chinese",
-//         "image": "chinese-food.jpg"
-//       },
-//       {
-//         "name": "Mexican",
-//         "image": "mexican-food.jpg"
-//       }, 
-//       {
-//         "name": "Indian",
-//         "image": "indian-food.jpg"
-//       },
-//       {
-//         "name": "Spanish",
-//         "image": "spanish-food.jpg"
-//       }
-//     ]);
-//   } catch (error) {
-//     console.log('err', + error)
-//   }
-// }
-
-// insertDymmyCategoryData();
-
-
-// async function insertDymmyRecipeData(){
-//   try {
-//     await Recipe.insertMany([
-//       { 
-//         "name": "Recipe Name Goes Here",
-//         "description": `Recipe Description Goes Here`,
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "American", 
-//         "image": "southern-friend-chicken.jpg"
-//       },
-//       { 
-//         "name": "Recipe Name Goes Here",
-//         "description": `Recipe Description Goes Here`,
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "American", 
-//         "image": "southern-friend-chicken.jpg"
-//       },
-//     ]);
-//   } catch (error) {
-//     console.log('err', + error)
-//   }
-// }
-
-// insertDymmyRecipeData();
 

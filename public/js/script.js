@@ -24,3 +24,39 @@ function deleteRecipe(recipeId) {
       console.error('Error deleting recipe:', error.message);
     });
 }
+
+function toggleUpdateForm() {
+  var recipeDetails = document.getElementById("recipeDetails");
+  var updateForm = document.getElementById("updateRecipeForm");
+
+  if (recipeDetails && updateForm) {
+    recipeDetails.style.display = recipeDetails.style.display === "none" ? "block" : "none";
+    updateForm.style.display = updateForm.style.display === "none" ? "block" : "none";
+  }
+}
+
+// Update the function definition to accept recipeId
+async function updateRecipe(event, recipeId) {
+  event.preventDefault(); // Prevent the default form submission
+
+  // Get the form data
+  const formData = new FormData(document.getElementById('updateRecipeForm'));
+
+  try {
+    const response = await fetch(`/recipe/${recipeId}`, {
+      method: 'PATCH',
+      body: formData,
+    });
+
+    if (response.ok) {
+      // Handle success, e.g., redirect to the updated recipe page
+      window.location.href = `/recipe/${recipeId}`;
+    } else {
+      // Handle error, e.g., display an error message
+      console.error('Error updating recipe:', response.statusText);
+    }
+  } catch (error) {
+    console.error('An unexpected error occurred:', error);
+  }
+}
+
