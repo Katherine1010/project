@@ -191,15 +191,17 @@ exports.deleteRecipe = async (req, res) => {
 const { findOneAndUpdate } = require('../models/Recipe');
 
 exports.updateRecipeOnPost = async (req, res) => {
+  const formData = req.body;
+  const recipeId = req.params.id;
   try {
     let imageUploadFile;
     let uploadPath;
     let newImageName;
-
+    
     if (!req.files || Object.keys(req.files).length === 0) {
       console.log('No Files were uploaded.');
     } else {
-      imageUploadFile = req.files.image;
+      imageUploadFile = req.files.newRecipeImage;
       newImageName = Date.now() + imageUploadFile.name;
 
       uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
@@ -209,20 +211,19 @@ exports.updateRecipeOnPost = async (req, res) => {
       });
     }
 
-    const recipeId = req.params.id;
-    const existingRecipe = await Recipe.findById(recipeId);
+  //  const recipeId = req.params.id;
+   const existingRecipe = await Recipe.findById(recipeId);
 
     if (!existingRecipe) {
       return res.status(404).json({ success: false, message: 'Recipe not found' });
     }
 
     // Update existing fields
-    existingRecipe.name = req.body.name;
-    existingRecipe.description = req.body.description;
-    existingRecipe.email = req.body.email;
-    existingRecipe.ingredients = req.body.ingredients;
-    existingRecipe.category = req.body.category;
+    existingRecipe.name = req.body.recipeName;
+    existingRecipe.description = req.body.recipeDescription;
+    existingRecipe.category = req.body.recipeCategory;
 
+    
     // Update image if a new image is provided
     if (req.files && Object.keys(req.files).length > 0) {
       existingRecipe.image = newImageName;
@@ -232,9 +233,10 @@ exports.updateRecipeOnPost = async (req, res) => {
     await existingRecipe.save();
 
     req.flash('infoSubmit', 'Recipe has been updated.');
-    res.redirect(`/recipe/${recipeId}`);
+    // res.redirect(`/recipe/${recipeId}`);
+    res.status(200).json({ success: true, message: 'Recipe has been updated.' });
   } catch (error) {
-    console.error(error);
+    console.error('Error:', error);
     req.flash('infoErrors', 'An error occurred while updating the recipe.');
     res.redirect(`/recipe/${recipeId}`);
   }

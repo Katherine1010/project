@@ -6,6 +6,7 @@ const recipeController = require('../controllers/recipeController');
  * App Routes 
 */
 router.get('/', recipeController.homepage);
+router.patch('/recipe/:id', recipeController.updateRecipeOnPost)
 router.post('/recipe/:id', recipeController.updateRecipeOnPost);
 router.get('/recipe/:id', recipeController.exploreRecipe);
 router.get('/categories', recipeController.exploreCategories);

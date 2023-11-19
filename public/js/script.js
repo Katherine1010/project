@@ -45,12 +45,14 @@ async function updateRecipe(event, recipeId) {
   try {
     const response = await fetch(`/recipe/${recipeId}`, {
       method: 'PATCH',
-      body: formData,
+      body: formData
     });
 
     if (response.ok) {
+      
       // Handle success, e.g., redirect to the updated recipe page
       window.location.href = `/recipe/${recipeId}`;
+
     } else {
       // Handle error, e.g., display an error message
       console.error('Error updating recipe:', response.statusText);

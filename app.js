@@ -4,7 +4,9 @@ const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+const bodyParser = require ('body-parser');
 
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -23,6 +25,9 @@ app.use(session({
 app.use(flash());
 app.use(fileUpload());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors());
 
 app.set('layout', './layouts/main');
 app.set('view engine', 'ejs');

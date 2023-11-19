@@ -42,38 +42,38 @@
   </div>
 
     <!-- Form for updating recipe -->
-    <form id="updateRecipeForm" action="/recipe/<%- recipe._id %>" method="post" onsubmit="updateRecipe(event, '<%- recipe._id %>')" style="display:none;">
-      <div class="mb-3">
-        <label for="recipeName" class="form-label">Recipe Name</label>
-        <input type="text" class="form-control" id="recipeName" name="recipeName" value="<%- recipe.name %>" required>
-      </div>
-      <div class="mb-3">
-        <label for="recipeCategory" class="form-label">Category</label>
-        <input type="text" class="form-control" id="recipeCategory" name="recipeCategory" value="<%- recipe.category %>" required>
-      </div>
-      <div class="mb-3">
-        <label for="recipeDescription" class="form-label">Cooking Instructions</label>
-        <textarea class="form-control" id="recipeDescription" name="recipeDescription" rows="5" required><%- recipe.description %></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="recipeIngredients" class="form-label">Ingredients</label>
-        <ul class="list-group list-group-flush">
-          <% recipe.ingredients.forEach(function(ingredient, index){ %>
-            <li class="list-group-item"><input type="text" class="form-control" name="recipeIngredients[]" value="<%= ingredient %>" required></li>
-          <% }) %>
-        </ul>
-      </div>
-      <div class="mb-3">
-        <label for="recipeImage" class="form-label">Current Image</label>
-        <img src="/uploads/<%- recipe.image %>" class="img-fluid" alt="<%- recipe.name %>">
-      </div>
-      <div class="mb-3">
-        <label for="newRecipeImage" class="form-label">New Image</label>
-        <input type="file" class="form-control" id="newRecipeImage" name="newRecipeImage">
-      </div>
-      <input type="hidden" name="_method" value="PATCH">
-      <button type="submit" class="btn btn-success">Update Recipe</button>
-    </form>
+      <form id="updateRecipeForm" action="/recipe/<%- recipe._id %>" method="post" onsubmit="updateRecipe(event, '<%- recipe._id %>')" style="display:none;">
+        <div class="mb-3">
+          <label for="recipeName" class="form-label">Recipe Name</label>
+          <input type="text" class="form-control" id="recipeName" name="recipeName" value="<%- recipe.name %>" required>
+        </div>
+        <div class="mb-3">
+          <label for="recipeCategory" class="form-label">Category</label>
+          <input type="text" class="form-control" id="recipeCategory" name="recipeCategory" value="<%- recipe.category %>" required>
+        </div>
+        <div class="mb-3">
+          <label for="recipeDescription" class="form-label">Cooking Instructions</label>
+          <textarea class="form-control" id="recipeDescription" name="recipeDescription" rows="5" required><%- recipe.description %></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="recipeIngredients" class="form-label">Ingredients</label>
+          <ul class="list-group list-group-flush">
+            <% recipe.ingredients.forEach(function(ingredient, index){ %>
+              <li class="list-group-item"><input type="text" class="form-control" name="recipeIngredients[]" value="<%= ingredient %>" required></li>
+            <% }) %>
+          </ul>
+        </div>
+        <div class="mb-3">
+          <label for="recipeImage" class="form-label">Current Image</label>
+          <img src="/uploads/<%- recipe.image %>" class="img-fluid" alt="<%- recipe.name %>">
+        </div>
+        <div class="mb-3">
+          <label for="newRecipeImage" class="form-label">New Image</label>
+          <input type="file" class="form-control" id="newRecipeImage" name="newRecipeImage">
+        </div>
+        <input type="hidden" name="_method" value="PATCH">
+        <button type="submit" class="btn btn-success">Update Recipe</button>
+      </form>
   
 <% } else { %>
   <p>No item found.</p>
