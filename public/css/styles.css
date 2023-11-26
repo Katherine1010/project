@@ -47,10 +47,11 @@ a { color: var(--bs-dark); }
 /* FORM STYLE */
 
 .form-container {
-  width: 300px;
+  width: 30%;
   margin: 0 auto;
   padding: 30px;
   background-color: #F1E4EF;
+  text-align: center;
 }
 input[type=text], input[type=password], input[type=email] {
   width: 100%;

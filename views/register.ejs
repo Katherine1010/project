@@ -1,20 +1,19 @@
 <!-- register.ejs -->
 
-<h2>Register</h2>
-
 <% if (error) { %>
 
 <% } %>
+<div class="form-container">
+  <h2>Join us today!</h2>
+        <p>Sign up now to become a member.</p>
+  <form method="post" action="/register">
 
-<form method="post" action="/register">
-  <label for="username">Username:</label>
-  <input type="text" name="username" required>
+    <input type="text" name="name" required placeholder="Enter Name">
+    <input type="email" name="email" required placeholder="Enter Email">
+    <input type="password" name="password" required placeholder="Choose A Password">
+    <input type="password" name="password" required placeholder="Re-Enter Password">
 
-  <label for="email">Email:</label>
-  <input type="email" name="email" required>
-
-  <label for="password">Password:</label>
-  <input type="password" name="password" required>
-
-  <button type="submit">Register</button>
-</form>
+    <button type="submit">Register</button>
+    <span class="login">Already a member? <a href="/login">Login Here</a>
+  </form>
+</div>

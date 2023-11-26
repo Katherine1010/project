@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
           // For example, you might use express-session to manage sessions
           const userName = req.session.userName;
           // Redirect to the index page on successful login
-          res.redirect('/home', { userName: userName });
+          res.redirect('/home');
           
         } else {
           // If passwords don't match, render the login page with an error message
