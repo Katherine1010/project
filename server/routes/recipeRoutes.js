@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const recipeController = require('../controllers/recipeController');
-
+const userController = require('../controllers/userController');
 /**
  * App Routes 
 */
@@ -18,6 +18,17 @@ router.get('/submit-recipe', recipeController.submitRecipe);
 router.post('/submit-recipe', recipeController.submitRecipeOnPost);
 router.delete('/recipe/:id', recipeController.deleteRecipe);
 
+// Login Page
+router.get('/login', userController.loginPage);
+router.post('/login', userController.login);
+
+// Register Page
+router.get('/register', userController.registerPage);
+router.post('/register', userController.register);
+
+// Login and Register Handlers
+router.post('/login', userController.loginPage);
+router.post('/register', userController.register);
 
  
 module.exports = router;
