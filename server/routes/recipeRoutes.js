@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 /**
  * App Routes 
 */
-router.get('/', recipeController.homepage);
+router.get('/', userController.loginPage);
 router.patch('/recipe/:id', recipeController.updateRecipeOnPost)
 router.post('/recipe/:id', recipeController.updateRecipeOnPost);
 router.get('/recipe/:id', recipeController.exploreRecipe);
@@ -17,6 +17,9 @@ router.get('/explore-random', recipeController.exploreRandom);
 router.get('/submit-recipe', recipeController.submitRecipe);
 router.post('/submit-recipe', recipeController.submitRecipeOnPost);
 router.delete('/recipe/:id', recipeController.deleteRecipe);
+
+// Dashboard
+router.get('/home', recipeController.homepage);
 
 // Login Page
 router.get('/login', userController.loginPage);

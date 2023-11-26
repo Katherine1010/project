@@ -29,9 +29,10 @@ exports.login = async (req, res) => {
         if (passwordMatch) {
           // Set any session or cookie information if needed
           // For example, you might use express-session to manage sessions
-  
+          const userName = req.session.userName;
           // Redirect to the index page on successful login
-          res.redirect('/');
+          res.redirect('/home', { userName: userName });
+          
         } else {
           // If passwords don't match, render the login page with an error message
           res.render('login', { title: 'Login', error: 'Invalid email or password' });
