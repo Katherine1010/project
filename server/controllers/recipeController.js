@@ -1,3 +1,4 @@
+
 require('../models/database');
 const Category = require('../models/Category');
 const Recipe = require('../models/Recipe');
@@ -244,7 +245,3 @@ exports.updateRecipeOnPost = async (req, res) => {
     res.redirect(`/recipe/${recipeId}`);
   }
 };
-
-
-
-
