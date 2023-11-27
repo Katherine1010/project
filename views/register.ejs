@@ -1,17 +1,21 @@
 <!-- register.ejs -->
-
-<% if (error) { %>
-
+<% if (errors && errors.length > 0) { %>
+  <ul>
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }); %>
+  </ul>
 <% } %>
+
 <div class="form-container">
   <h2>Join us today!</h2>
         <p>Sign up now to become a member.</p>
   <form method="post" action="/register">
 
-    <input type="text" name="name" required placeholder="Enter Name">
+    <input type="text" name="username" required placeholder="Enter Username">
     <input type="email" name="email" required placeholder="Enter Email">
     <input type="password" name="password" required placeholder="Choose A Password">
-    <input type="password" name="password" required placeholder="Re-Enter Password">
+    <input type="password" name="password2" required placeholder="Re-Enter Password">
 
     <button type="submit">Register</button>
     <span class="login">Already a member? <a href="/login">Login Here</a>

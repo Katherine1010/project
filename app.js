@@ -9,6 +9,7 @@ const bodyParser = require ('body-parser');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 require('dotenv').config();
 
@@ -24,6 +25,12 @@ app.use(session({
 }));
 app.use(flash());
 app.use(fileUpload());
+
+app.use(session({
+  secret: SECRET_KEY,
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
