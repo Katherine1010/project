@@ -25,6 +25,9 @@ router.get('/home', recipeController.homepage);
 router.get('/login', userController.loginPage);
 router.post('/login', userController.login);
 
+// Logout Page
+router.get('/logout', userController.logoutPage);
+
 // Register Page
 router.get('/register', userController.registerPage);
 router.post('/register', userController.register);

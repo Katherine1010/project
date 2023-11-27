@@ -32,6 +32,16 @@ app.use(session({
   saveUninitialized: true
 }));
 
+app.use((req, res, next) => {
+  // Initialize session variables if not set
+  req.session.loggedIn = req.session.loggedIn || false;
+
+  // Set loggedIn for the views
+  res.locals.loggedIn = req.session.loggedIn;
+
+  next();
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());

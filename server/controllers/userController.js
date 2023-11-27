@@ -6,13 +6,22 @@ const { check, validationResult } = require('express-validator');
 
 // Login Page
 exports.loginPage = (req, res) => {
-  res.render('login', { title: 'Login' });
+  res.render('login', { title: 'Login'});
+};
+
+// Logout Page
+exports.logoutPage = (req, res) => {
+  // Set loggedIn to false
+  req.session.loggedIn = false;
+  // Redirect to the desired logout page or homepage
+  res.redirect('/');
 };
 
 // Register Page
 exports.registerPage = (req, res) => {
+  const loggedIn = req.session.loggedIn;
   // Pass an empty object as the second argument to provide an initial value for locals
-  res.render('register', { title: 'Register', errors: [] });
+  res.render('register', { title: 'Register', errors: [], loggedIn });
 };
 
 // Login Handler
@@ -28,10 +37,10 @@ exports.login = async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (passwordMatch) {
-        // Set any session or cookie information if needed
-        // For example, you might use express-session to manage sessions
+        // Set session variables for loggedIn and userName
         req.session.loggedIn = true;
         req.session.userName = user.username;
+
         // Redirect to the index page on successful login
         res.redirect('/home');
       } else {
@@ -50,12 +59,14 @@ exports.login = async (req, res) => {
 
 // Register Handler
 exports.register = [
+  
   // Input validation
   check('username').notEmpty().withMessage('Username is required'),
   check('email').isEmail().withMessage('Email is not valid'),
   check('password').isLength({ min: 5 }).withMessage('Password must be at least 5 characters long'),
 
   async (req, res) => {
+
     //console.log(req.body); // Log the request body to inspect the received data
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/css/styles.css">
   
 </head>
+
+
 <body>
   
   <div class="container-xxl px-md-5 bg-white shadow-lg">
@@ -23,10 +25,18 @@
       </a>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
-        <li><a href="/submit-recipe" class="nav-link px-2 link-secondary">Submit</a></li>
-        <li><a href="/login" class="nav-link px-2 link-secondary">Login</a></li>
-        <li><a href="/register" class="nav-link px-2 link-secondary">Register</a></li>
+      
+        <% if (loggedIn) { %>
+          <li><a href="/home" class="nav-link px-2 link-secondary">Home</a></li>
+          <!-- Show Submit and Logout when the user is logged in -->
+          <li><a href="/submit-recipe" class="nav-link px-2 link-secondary">Submit</a></li>
+          <li><a href="/logout" class="nav-link px-2 link-secondary">Logout</a></li>
+        <% } else { %>
+          <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
+          <!-- Show Login and Register when the user is not logged in -->
+          <li><a href="/login" class="nav-link px-2 link-secondary">Login</a></li>
+          <li><a href="/register" class="nav-link px-2 link-secondary">Register</a></li>
+        <% } %>
       </ul>
 
       <div class="col-md-3 text-end">
