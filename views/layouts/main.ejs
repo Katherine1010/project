@@ -40,10 +40,14 @@
       </ul>
 
       <div class="col-md-3 text-end">
-        <form method="POST" action="/search">
-          <input type="search" name="searchTerm" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
+        <% if (loggedIn) { %>
+          <form method="POST" action="/search">
+            <input type="search" name="searchTerm" class="form-control" placeholder="Search..." aria-label="Search">
+          </form>
+        <% } %>
       </div>
+
+      
     </header>
 
     <main>
