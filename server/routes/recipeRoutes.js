@@ -19,9 +19,10 @@ router.post('/submit-recipe', recipeController.submitRecipeOnPost);
 router.delete('/recipe/:id', recipeController.deleteRecipe);
 
 // Dashboard
-router.get('/home',  recipeController.homepage, (req, res) =>{
-    const userEmail = req.query.userEmail;
-    res.send(userEmail);
+router.get('/home', (req, res) => {
+    const userEmail = req.session.userEmail;
+    req.query.userEmail = userEmail;
+    recipeController.homepage(req, res);
 });
 
 // Login Page

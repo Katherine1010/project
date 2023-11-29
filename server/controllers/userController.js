@@ -15,7 +15,6 @@ exports.logoutPage = (onLogoutCallback) => (req, res) => {
   req.session.loggedIn = false;
 
   if (typeof onLogoutCallback === 'function') {
-    console.log('we are here..1');
     onLogoutCallback();
   }
 
@@ -52,8 +51,9 @@ exports.login = async (req, res) => {
 
         // Redirect to the index page on successful login
         //
-        res.redirect(`/home?userEmail=${userEmail}`);
-        // console.log(user)
+        // res.redirect(`/home?userEmail=${userEmail}`);
+        req.session.userEmail = user.email;
+        res.redirect('/home');
       } else {
         // If passwords don't match, render the login page with an error message
         res.render('login', { title: 'Login', error: 'Invalid email or password' });
