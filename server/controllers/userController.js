@@ -10,9 +10,15 @@ exports.loginPage = (req, res) => {
 };
 
 // Logout Page
-exports.logoutPage = (req, res) => {
+exports.logoutPage = (onLogoutCallback) => (req, res) => {
   // Set loggedIn to false
   req.session.loggedIn = false;
+
+  if (typeof onLogoutCallback === 'function') {
+    console.log('we are here..1');
+    onLogoutCallback();
+  }
+
   // Redirect to the desired logout page or homepage
   res.redirect('/');
 };
@@ -41,8 +47,13 @@ exports.login = async (req, res) => {
         req.session.loggedIn = true;
         req.session.userName = user.username;
 
+        //get the email from the user logging in
+        const userEmail = user.email;
+
         // Redirect to the index page on successful login
-        res.redirect('/home');
+        //
+        res.redirect(`/home?userEmail=${userEmail}`);
+        // console.log(user)
       } else {
         // If passwords don't match, render the login page with an error message
         res.render('login', { title: 'Login', error: 'Invalid email or password' });
