@@ -14,11 +14,17 @@ function deleteRecipe(recipeId) {
     method: 'DELETE',
   })
     .then(response => {
+      
       if (!response.ok) {
         throw new Error(`Network response was not ok - ${response.statusText}`);
       }
       console.log('Recipe deleted successfully');
-      window.location.reload();
+      // window.location.reload();
+      // const name = req.body;
+      // console.log('name: '+name);
+      // console.log('body: '+req.body);
+      alert('Recipe deleted!');
+      window.location.href = '/home';
     })
     .catch(error => {
       console.error('Error deleting recipe:', error.message);

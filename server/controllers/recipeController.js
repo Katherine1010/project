@@ -188,14 +188,14 @@ exports.submitRecipeOnPost = async(req, res) => {
   }
 }
 
-// Delete Recipe
+// Delete Recipe  
 
 exports.deleteRecipe = async (req, res) => {
   try {
     const recipeId = req.params.id;
     console.log('Deleting recipe with ID:', recipeId);
     await Recipe.findByIdAndDelete(recipeId);
-    res.json({ success: true, message: 'Recipe deleted successfully' });
+    res.json({ success: true, body: req.params.name, message: 'Recipe deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
