@@ -4,6 +4,7 @@ const Category = require('../models/Category');
 const Recipe = require('../models/Recipe');
 const User = require('../models/User');  // Import the User model
 
+let userLogedIn = '';
 
 /**
  * GET /
@@ -19,6 +20,12 @@ exports.homepage = async(req, res) => {
     const chinese = await Recipe.find({ 'category': 'Chinese' }).limit(limitNumber);
 
     const food = { latest, thai, american, chinese };
+
+    const userEmail = req.query.userEmail;
+    if(userLogedIn != null){
+      const userInSession = await User.find({'email': userEmail});
+      userLogedIn = userInSession[0].email;
+    }
 
     res.render('index', { title: 'La Cucina Felice - Home', categories, food } );
   } catch (error) {
@@ -64,7 +71,13 @@ exports.exploreRecipe = async(req, res) => {
   try {
     let recipeId = req.params.id;
     const recipe = await Recipe.findById(recipeId);
-    res.render('recipe', { title: 'La Cucina Felice - Recipe', recipe } );
+    if(userLogedIn === recipe.email){
+      console.log('you can edit the recipe');
+      res.render('recipe', { title: 'La Cucina Felice - Recipe', recipe } );
+    }else{
+      console.log('you CANNOT edit the recipe');
+      res.render('noEditableRecipe', { title: 'La Cucina Felice - Recipe', recipe } );
+    }
   } catch (error) {
     res.status(500).send({message: error.message || "Error Occured" });
   }
@@ -135,7 +148,7 @@ exports.submitRecipe = async(req, res) => {
 */
 exports.submitRecipeOnPost = async(req, res) => {
   try {
-
+    console.log(userLogedIn.email);
     let imageUploadFile;
     let uploadPath;
     let newImageName;
@@ -175,14 +188,14 @@ exports.submitRecipeOnPost = async(req, res) => {
   }
 }
 
-// Delete Recipe
+// Delete Recipe  
 
 exports.deleteRecipe = async (req, res) => {
   try {
     const recipeId = req.params.id;
     console.log('Deleting recipe with ID:', recipeId);
     await Recipe.findByIdAndDelete(recipeId);
-    res.json({ success: true, message: 'Recipe deleted successfully' });
+    res.json({ success: true, body: req.params.name, message: 'Recipe deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
@@ -193,6 +206,7 @@ exports.deleteRecipe = async (req, res) => {
 // POST /update-recipe
 // Update Recipe
 const { findOneAndUpdate } = require('../models/Recipe');
+const { loginPage } = require('./userController');
 
 exports.updateRecipeOnPost = async (req, res) => {
   const formData = req.body;
